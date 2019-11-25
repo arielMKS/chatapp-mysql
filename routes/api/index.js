@@ -1,13 +1,9 @@
 const router = require("express").Router();
-const bookRoutes = require("./book.routes");
+const chatRoutes = require("./chat.routes");
 
 // Book routes
 // router.use("/api/books", bookRoutes);
-router.use("/api/books", bookRoutes);
-
-router.use("/api/user", (req, res) => {
-  res.json("No matching routes");
-});
+router.use("/api/chat", chatRoutes);
 
 // If no API routes are hit, send the React app
 // router.use(function(req, res) {

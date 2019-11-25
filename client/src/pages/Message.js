@@ -2,23 +2,24 @@ import React from "react";
 import API from "../utils/API";
 import { List, ListItem } from "../components/List";
 
-class Books extends React.Component {
+class Message extends React.Component {
   state = {
-    books: [],
+    messagesInRoom: [],
     title: "",
     author: "",
     synopsis: ""
   };
 
   componentDidMount() {
-    this.loadBooks();
+    this.loadAllMessages();
   }
 
-  loadBooks = () => {
-    API.getBooks()
+  loadAllMessages = () => {
+    API.getMessageByRm(2)
       .then(res => {
         console.log("RESULTS", res);
-        this.setState({ books: res.data, title: "", author: "", synopsis: "" });
+        // BLOCK THIS FOR NOW WHILE FIXING ROUTES
+        // this.setState({ messagesInRoom: res.data, title: "", author: "", synopsis: "" });
       })
       .catch(err => {
         console.log("Error on client", err);
@@ -26,12 +27,12 @@ class Books extends React.Component {
   };
 
   render() {
-    console.log("BOOKS STATE", this.state);
+    console.log("messagesInRoom STATE", this.state);
 
-    if (this.state.books.length > 0) {
+    if (this.state.messagesInRoom.length > 0) {
       return (
         <List>
-          {this.state.books.map(book => (
+          {this.state.messagesInRoom.map(book => (
             <ListItem key={book.bookid}>
               <div>
                 <span style={{ color: "blue" }}>{book.title}</span>{" "}
@@ -63,4 +64,4 @@ class Books extends React.Component {
   }
 }
 
-export default Books;
+export default Message;

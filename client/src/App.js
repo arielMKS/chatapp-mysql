@@ -1,9 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Books from "./pages/Books";
+// import Message from "./pages/Message";
 import Nav from "./components/Nav";
 import Detail from "./pages/Detail";
-import AddBook from "./components/AddBook";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ChatDashboard from "./pages/ChatDashboard";
 
 // import "./App.css";
 
@@ -13,9 +15,10 @@ function App() {
       <div>
         <Nav />
         <Switch>
-          <Route exact path="/" component={Books} />
+          <Route exact path="/" component={ChatDashboard} />
           <Route exact path="/book/:id" component={Detail} />
-          <Route exact path="/addbook" component={AddBook} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
         </Switch>
       </div>
     </Router>

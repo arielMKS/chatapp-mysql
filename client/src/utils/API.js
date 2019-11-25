@@ -1,15 +1,27 @@
 import axios from "axios";
 
 export default {
-  // Gets all books
-  getBooks: function() {
-    console.log("get books firing");
-    return axios.get("/api/books");
+  // Gets all messages in a particualar room
+  getAllRoom: function() {
+    return axios.get("/api/chat/rooms");
   },
-  // Gets the book with the given id
-  getBook: function(id) {
-    return axios.get("/api/books/" + id);
+  // Login user
+  login: function(userData) {
+    return axios.post("/api/chat/login", userData);
   },
+  // Gets all message
+  getAllMessage: function() {
+    return axios.get("/api/chat");
+  },
+  // Gets all messages in a particualar room
+  getMessageByRm: function(id) {
+    return axios.get("/api/chat/" + id);
+  },
+  // Saves a book to the database
+  saveUser: function(userData) {
+    return axios.post("/api/chat", userData);
+  },
+
   // Deletes the book with the given id
   deleteBook: function(id) {
     return axios.delete("/api/books/" + id);
