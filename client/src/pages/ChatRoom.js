@@ -3,7 +3,7 @@ import API from "../utils/API";
 
 class ChatRoom extends React.Component {
   state = {
-    messagesInThisRoom: []
+    // messagesInThisRoom: []
   };
 
   componentDidMount = () => {
@@ -30,7 +30,7 @@ class ChatRoom extends React.Component {
           {this.props.messagesInThisRoom[0] &&
             this.props.messagesInThisRoom[0].name}
         </h1>
-        {this.renderMessage()}
+        {this.props.messagesInThisRoom[0] && this.renderMessage()}
       </div>
     );
   }

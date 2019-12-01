@@ -63,9 +63,12 @@ io.on("connection", socket => {
     //    ... also, console log appears only in that browser
     // socket.emit("RECEIVE_MESSAGE", data);
 
-    // this emits to all connected users
+    // send an event to everyone
     // good: All browsers are correctly updated!
     // bad: The other rooms get changed
     io.emit("RECEIVE_MESSAGE", data);
+
+    // sent a message to everyone except for certain socket
+    // socket.broadcast.emit("hi");
   });
 });

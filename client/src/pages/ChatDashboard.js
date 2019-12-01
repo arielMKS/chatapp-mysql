@@ -4,86 +4,89 @@ import { List, ListItem } from "../components/List";
 
 import io from "socket.io-client";
 import ChatRoom from "./ChatRoom";
-
 import "./ChatDashboard.css";
 
+let socket = io("localhost:3001");
+
 class ChatDashboard extends React.Component {
-  constructor(props) {
-    super(props);
+  state = {
+    messages: [],
+    messagesInThisRoom: [],
+    rooms: [],
+    activeRoom: null,
+    inputText: "",
+    currentUserId: "",
+    currentUserName: ""
+  };
 
-    this.state = {
-      messagesInThisRoom: [],
-      rooms: [],
-      activeRoom: null,
-      inputText: "",
-      currentUserId: "",
-      currentUserName: ""
-    };
+  componentDidMount = () => {
+    // console.log("Chat dashboard CDM firing");
+    this.loadChatRooms(); // rename to something like init()
 
-    // this.socket = io("http://localhost:3001");
-    this.socket = io("localhost:3001");
-
-    this.socket.on("RECEIVE_MESSAGE", function(data) {
+    // IMPORTANT!! socket.on always listens for event emitter from server and runs isolated from React's CDM
+    socket.on("RECEIVE_MESSAGE", data => {
       console.log("RECEIVE_MESSAGE", data);
-      addMessage(data);
+      // this.addMessage(data);
+
+      // Ariel: this code calls the function to requery new messages but this is not efficient to do for every new message
+      if (this.state.activeRoom) {
+        this.requeryMessages(this.state.activeRoom);
+      }
     });
+  };
 
-    const addMessage = data => {
-      console.log("add message firing", data);
-      this.joinChatRoom(data.roomid);
-    };
-
-    this.componentDidMount = () => {
-      this.loadChatRooms();
-
-      // current user id and user name are passed in from Login
-      this.setState({
-        currentUserId: this.props.location.state.state.userid,
-        currentUserName: this.props.location.state.state.email
-      });
-    };
-
-    this.loadChatRooms = () => {
-      API.getAllRoom()
-        .then(res => {
-          this.setState({ rooms: res.data });
-        })
-        .catch(err => {
-          console.log("Error on client", err);
+  loadChatRooms = () => {
+    // console.log("load chat rooms firing");
+    API.getAllRoom()
+      .then(res => {
+        this.setState({
+          rooms: res.data,
+          currentUserId: this.props.location.state.state.userid,
+          currentUserName: this.props.location.state.state.email
         });
-    };
-
-    this.joinChatRoom = roomid => {
-      API.getMessageByRm(roomid)
-        .then(res => {
-          console.log("Chat Room RESULTS", res);
-          this.setState({ messagesInThisRoom: res.data, activeRoom: roomid });
-        })
-        .catch(err => console.log("Error", err));
-
-      // this.setState({ activeRoom: roomid });
-    };
-
-    this.handleChange = e => {
-      const name = e.target.name;
-      this.setState({
-        [name]: e.target.value
+      })
+      .catch(err => {
+        console.log("Error on client", err);
       });
-    };
+  };
 
-    this.handleSubmit = e => {
-      e.preventDefault();
+  requeryMessages = roomid => {
+    // console.log("Requerying messages");
+    API.getMessageByRm(roomid)
+      .then(res => {
+        this.setState({ messagesInThisRoom: res.data });
+      })
+      .catch(err => console.log("Error", err));
+  };
 
-      this.socket.emit("SEND_MESSAGE", {
-        userid: this.state.currentUserId,
-        roomid: this.state.activeRoom,
-        message: this.state.inputText
-      });
-    };
-  }
+  joinChatRoom = roomid => {
+    this.setState(
+      {
+        activeRoom: roomid
+      },
+      () => this.requeryMessages(roomid)
+    );
+  };
+
+  handleChange = e => {
+    const name = e.target.name;
+    this.setState({
+      [name]: e.target.value
+    });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+
+    socket.emit("SEND_MESSAGE", {
+      userid: this.state.currentUserId,
+      roomid: this.state.activeRoom,
+      message: this.state.inputText
+    });
+  };
 
   render() {
-    console.log("Dashboard STATE", this.state);
+    console.log("Chat Dashboard STATE", this.state);
     // console.log("Chat dashboard props-----", this.props.location.state.state);
 
     return (
@@ -105,6 +108,7 @@ class ChatDashboard extends React.Component {
           <ChatRoom
             key={this.state.activeRoom}
             messagesInThisRoom={this.state.messagesInThisRoom}
+            // activeRoom={this.state.activeRoom}
           />
           {this.state.activeRoom && (
             <form onSubmit={this.handleSubmit}>
