@@ -4,6 +4,8 @@ const app = express();
 const socket = require("socket.io");
 // const io = socket(app);
 const routes = require("./routes/api");
+const chatService = require("./services/chat.service");
+
 const PORT = process.env.PORT || 3001;
 
 // io.on("connection", socket => {
@@ -40,9 +42,30 @@ io = socket(server);
 
 io.on("connection", socket => {
   console.log("Socket ID", socket.id);
-
+  //Here we listen on a new namespace called "SEND_MESSAGE"
   socket.on("SEND_MESSAGE", function(data) {
-    console.log("Data test", data);
+    const { userid, roomid, message } = data;
+    console.log("SEND_MESSAGE===", data);
+
+    chatService
+      .postMessage(userid, roomid, message)
+      .then(results => {
+        console.log("controller 1", results);
+        return;
+      })
+      .catch(err => {
+        // res.status(500).send(err);
+      });
+
+    // this emits to the active user only
+    // good: The open browser gets updated and other rooms are not affected at all
+    // bad: The current browser is the only one updated not the other tabs
+    //    ... also, console log appears only in that browser
+    // socket.emit("RECEIVE_MESSAGE", data);
+
+    // this emits to all connected users
+    // good: All browsers are correctly updated!
+    // bad: The other rooms get changed
     io.emit("RECEIVE_MESSAGE", data);
   });
 });

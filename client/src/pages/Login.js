@@ -27,7 +27,8 @@ class Login extends React.Component {
     API.login(user).then(results => {
       console.log("Login", results);
       if (results.data.isLoggedIn) {
-        this.props.history.push("/");
+        // Go to home page. Pass userid and email
+        this.props.history.push("/dashboard", { state: results.data.user });
       }
     });
   };

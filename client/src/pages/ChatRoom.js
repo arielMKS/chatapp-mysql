@@ -5,18 +5,13 @@ class ChatRoom extends React.Component {
   state = {
     messagesInThisRoom: []
   };
+
   componentDidMount = () => {
-    // make api call by active room
-    API.getMessageByRm(this.props.activeRoom)
-      .then(res => {
-        console.log("Chat Room RESULTS", res);
-        this.setState({ messagesInThisRoom: res.data });
-      })
-      .catch(err => console.log("Error", err));
+    // load all message in active room
   };
 
   renderMessage = () => {
-    return this.state.messagesInThisRoom.map((msg, idx) => {
+    return this.props.messagesInThisRoom.map((msg, idx) => {
       return (
         <div key={idx}>
           {msg.email}...
@@ -31,9 +26,9 @@ class ChatRoom extends React.Component {
     return (
       <div>
         <h1>
-          Active Chat:{" "}
-          {this.state.messagesInThisRoom[0] &&
-            this.state.messagesInThisRoom[0].name}
+          Active Room:
+          {this.props.messagesInThisRoom[0] &&
+            this.props.messagesInThisRoom[0].name}
         </h1>
         {this.renderMessage()}
       </div>

@@ -6,9 +6,9 @@ import "./style.css";
 function Nav() {
   return (
     <div className="Nav">
-      <Link to="/">Home Page</Link>
-      <Link to="/login">Login Page</Link>
-      <Link to="/register">Register Page</Link>
+      <Link to="/">Login Page</Link>
+      <Link to="/dashboard">Dashboard</Link>
+      <Link to="/register">Register</Link>
     </div>
   );
 }

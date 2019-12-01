@@ -10,5 +10,6 @@ router.get("/:id", chatController.getByRoomId); // args passed in req.params.id
 // router.put("/", bookController.update); // args passed in req.body
 router.post("/", chatController.post); // args passed in req.body
 router.post("/login", chatController.login);
+router.post("/message", chatController.postMessage);
 
 module.exports = router;

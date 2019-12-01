@@ -11,13 +11,12 @@ module.exports = {
     chatService
       .login(email, password)
       .then(results => {
-        // console.log("controller .then success", results);
-        if (!results.length) {
+        if (!results) {
           res.status(500).json({ success: false });
         } else {
           req.session.isLoggedIn = true; // IMPORTANT!! The user is logged in
-          req.session.user = email;
-          res.status(200).json({ isLoggedIn: true, user: email });
+          req.session.user = results;
+          res.status(200).json({ isLoggedIn: true, user: results }); // return userid, user email
         }
       })
       .catch(err => {
@@ -67,7 +66,7 @@ module.exports = {
       });
   },
 
-  // POST
+  // POST A NEW USER
   post: function(req, res) {
     const { fname, lname, email, password } = req.body;
     chatService
@@ -80,7 +79,31 @@ module.exports = {
         // CHECK LENGTH OF "RESULTS" IF USER WAS CREATED OR NOT
         if (results) {
           // res.status(201).json(results); // return new record id if successful
-          res.status(201).json({ success: true }); // return success true
+          res.status(201).json(results); // return success true
+        } else {
+          res.status(500).json({ success: false });
+        }
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+
+  // POST A MESSAGE
+  postMessage: function(req, res) {
+    const { userid, roomid, message } = req.body;
+    console.log("controller data", userid, roomid, message);
+    chatService
+      .postMessage(userid, roomid, message)
+      .then(results => {
+        console.log("controller 11", results);
+        if (results instanceof Error) {
+          res.status(500).json(results);
+        }
+        // CHECK LENGTH OF "RESULTS" IF USER WAS CREATED OR NOT
+        if (results) {
+          // res.status(201).json(results); // return new record id if successful
+          res.status(201).json(results); // return success true
         } else {
           res.status(500).json({ success: false });
         }

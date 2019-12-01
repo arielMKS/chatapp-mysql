@@ -17,9 +17,14 @@ export default {
   getMessageByRm: function(id) {
     return axios.get("/api/chat/" + id);
   },
-  // Saves a book to the database
+  // Save new user data to the database
   saveUser: function(userData) {
     return axios.post("/api/chat", userData);
+  },
+  // Save new message to the database
+  postMessage: function(userData) {
+    console.log("user data", userData);
+    return axios.post("/api/chat/message", userData);
   },
 
   // Deletes the book with the given id

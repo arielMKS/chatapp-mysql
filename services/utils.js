@@ -11,17 +11,17 @@ const con = mysql.createConnection({
 
 module.exports = {
   // GET PASSWORD OF A PARTICULAR USER
-  getByPassword: function(password, email) {
-    let query_str =
-      "CALL GetByPassword(?,?, @OUTPUTPARAM); SELECT @OUTPUTPARAM";
+  getPassword: function(email) {
+    // let query_str = "CALL GetPassword(?, @OUTPUTPARAM); SELECT @OUTPUTPARAM";
+    let query_str = "CALL GetPassword(?);";
+
     return con
       .promise()
-      .query(query_str, [password, email])
+      .query(query_str, [email])
       .then(([rows, fields]) => {
-        console.log("UTILS PASSWORD", rows[1][0]);
-        return rows[1][0]["@OUTPUTPARAM"];
+        return rows[0][0];
       })
-      .catch(err => err);
+      .catch(err => console.log("ERROR ariel", err));
   },
 
   // GET BY EMAIL
@@ -46,6 +46,22 @@ module.exports = {
       .query(query_str, [fname, lname, email, password])
       .then(([rows, fields]) => {
         console.log("utils post", rows[1][0]);
+        return rows[1][0]["@OUTPUTPARAM"]; // return the new record id
+      })
+      .catch(err => err); // will run if any error in db
+  },
+
+  //  POST A MESSAGE
+  postMessage: function(userid, roomid, message) {
+    console.log("Utils data", userid, roomid, message);
+    // **** TEMPORARILY BLOCKED THIS FOR NOW
+    let query_str =
+      "CALL InsertMessage(?,?,?, @OUTPUTPARAM); SELECT @OUTPUTPARAM";
+    return con
+      .promise()
+      .query(query_str, [userid, roomid, message])
+      .then(([rows, fields]) => {
+        console.log("utils postMessage", rows[1][0]);
         return rows[1][0]["@OUTPUTPARAM"]; // return the new record id
       })
       .catch(err => err); // will run if any error in db

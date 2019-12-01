@@ -12,10 +12,13 @@ const login = async (email, password) => {
     if (str.trim().length > 0) {
       console.log("service email", str);
       // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
-      const hashedPassword = await UTILS.getByPassword(password, email);
-      console.log("service hashedPassword", hashedPassword);
-
-      return hashedPassword; // user password was found
+      const hashedPassword = await UTILS.getPassword(email);
+      const userInfo = {
+        userid: hashedPassword.userid,
+        email: hashedPassword.email
+      };
+      // console.log("service hashedPassword", userInfo);
+      return userInfo;
     } else {
       return ""; // return null because email already exists in db
     }
@@ -25,18 +28,30 @@ const login = async (email, password) => {
 };
 
 // POST
-const post = async (fname = "", lname = "", email = "", password = "") => {
+const post = async (fname = "", lname = "", email, password) => {
   try {
     // first check if email exists in db
     const str = await UTILS.getByEmail(email); // get email if it exists in db
     if (!str.trim().length) {
       // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
-      const stEmail = await UTILS.post(fname, lname, email, password);
-      return stEmail;
+      const id = await UTILS.post(fname, lname, email, password);
+      const user = { userId: id, email };
+      return user;
     } else {
       // return null because email already exists in db
       return null;
     }
+  } catch (err) {
+    return err.message;
+  }
+};
+
+// POST A MESSAGE
+const postMessage = async (userid, roomid, message) => {
+  try {
+    // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
+    const id = await UTILS.postMessage(userid, roomid, message);
+    return id;
   } catch (err) {
     return err.message;
   }
@@ -101,6 +116,7 @@ module.exports = {
   getAllRoom,
   getByRoomId,
   post,
+  postMessage,
   update,
   del
 };
