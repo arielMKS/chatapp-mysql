@@ -17,7 +17,23 @@ class ChatRoom extends React.Component {
   render() {
     // console.log("CHAT ROOM STATE", this.state);
     return (
-      <div>{this.props.messagesInThisRoom[0] && this.renderMessage()}</div>
+      <div>
+        {this.props.messagesInThisRoom[0] ? (
+          this.renderMessage()
+        ) : (
+          <span
+            style={{
+              // color: "red",
+              display: "flex",
+              // border: "1px solid red",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            Please click on a room...
+          </span>
+        )}
+      </div>
     );
   }
 }

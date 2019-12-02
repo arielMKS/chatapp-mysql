@@ -64,5 +64,9 @@ io.on("connection", socket => {
 
     // sent a message to everyone except for certain socket
     // socket.broadcast.emit("hi");
+
+    socket.on("DISCONNECT", data => {
+      console.log("DISCONNECTED", data);
+    });
   });
 });

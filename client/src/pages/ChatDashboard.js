@@ -6,8 +6,8 @@ import io from "socket.io-client";
 import ChatRoom from "./ChatRoom";
 import "./ChatDashboard.css";
 
-// let socket = io("localhost:3001");
-let socket = io("https://secret-badlands-68198.herokuapp.com/");
+let socket = io("localhost:3001");
+// let socket = io("https://secret-badlands-68198.herokuapp.com/");
 
 class ChatDashboard extends React.Component {
   state = {
@@ -20,19 +20,12 @@ class ChatDashboard extends React.Component {
     currentUserName: ""
   };
 
-  componentWillUnmount = () => {
-    socket.emit("disconnect", () => {});
-  };
-
   componentDidMount = () => {
     // console.log("Chat dashboard CDM firing");
     this.loadChatRooms(); // rename to something like init()
 
     // IMPORTANT!! socket.on always listens for event emitter from server and runs isolated from React's CDM
     socket.on("RECEIVE_MESSAGE", data => {
-      console.log("RECEIVE_MESSAGE", data);
-      // this.addMessage(data);
-
       // Ariel: this code calls the function to requery new messages but this is not efficient to do for every new message
       if (this.state.activeRoom) {
         this.requeryMessages(this.state.activeRoom);
@@ -55,8 +48,8 @@ class ChatDashboard extends React.Component {
       });
   };
 
+  // function to fetch all message in active room
   requeryMessages = roomid => {
-    // console.log("Requerying messages");
     API.getMessageByRm(roomid)
       .then(res => {
         this.setState({ messagesInThisRoom: res.data });
@@ -64,6 +57,7 @@ class ChatDashboard extends React.Component {
       .catch(err => console.log("Error", err));
   };
 
+  // function to set room active and fetch messages
   joinChatRoom = roomid => {
     this.setState(
       {
@@ -95,18 +89,17 @@ class ChatDashboard extends React.Component {
 
   render() {
     console.log("Chat Dashboard STATE", this.state);
-    // console.log("Chat dashboard props-----", this.props.location.state.state);
 
     return (
       <div className="main">
         <div className="subheading">
           <h1>Chat App</h1>
-          <span>active room: </span>
+          <span>Active room: {!this.state.activeRoom && "None"}</span>
           <h3>
             {this.state.messagesInThisRoom[0] &&
               this.state.messagesInThisRoom[0].name}
           </h3>
-          <h4>User: {this.state.currentUserName}</h4>
+          <span>User: {this.state.currentUserName}</span>
         </div>
 
         <div className="chat-container">
