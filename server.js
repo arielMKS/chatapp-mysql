@@ -3,6 +3,8 @@ const session = require("express-session");
 const app = express();
 const socket = require("socket.io");
 // const io = socket(app);
+require("dotenv").config();
+
 const routes = require("./routes/api");
 const chatService = require("./services/chat.service");
 

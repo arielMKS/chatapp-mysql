@@ -19,6 +19,10 @@ class ChatDashboard extends React.Component {
     currentUserName: ""
   };
 
+  componentWillUnmount = () => {
+    socket.emit("disconnect", () => {});
+  };
+
   componentDidMount = () => {
     // console.log("Chat dashboard CDM firing");
     this.loadChatRooms(); // rename to something like init()

@@ -1,11 +1,18 @@
 const mysql = require("mysql2");
 
 // create the connection
+// const con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   database: "chatdb",
+//   password: "Password1",
+//   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
+// });
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "chatdb",
-  password: "Password1",
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DATABASE,
+  password: process.env.DB_PASS,
   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 });
 
