@@ -10,22 +10,17 @@ const chatService = require("./services/chat.service");
 
 const PORT = process.env.PORT || 3001;
 
-// io.on("connection", socket => {
-//   console.log("Test socket", socket.id);
-// });
-
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// this will give me access to an object via req.session I can attach "isLoggedIn" property that looks like this...
-// Session { cookie:{...}, isLoggedIn:true }
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: true
-  })
-);
+
+// app.use(
+//   session({
+//     secret: "keyboard cat",
+//     resave: false,
+//     saveUninitialized: true
+//   })
+// );
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
@@ -44,30 +39,27 @@ io = socket(server);
 
 io.on("connection", socket => {
   console.log("Socket ID", socket.id);
-  //Here we listen on a new namespace called "SEND_MESSAGE"
+
+  // Here we listen on a new namespace called "SEND_MESSAGE"
   socket.on("SEND_MESSAGE", function(data) {
     const { userid, roomid, message } = data;
-    console.log("SEND_MESSAGE===", data);
+    // console.log("SEND_MESSAGE===", data);
 
     chatService
       .postMessage(userid, roomid, message)
       .then(results => {
-        console.log("controller 1", results);
+        // console.log("controller", results);
         return;
       })
       .catch(err => {
         // res.status(500).send(err);
+        console.log("Error on post new message");
       });
 
     // this emits to the active user only
-    // good: The open browser gets updated and other rooms are not affected at all
-    // bad: The current browser is the only one updated not the other tabs
-    //    ... also, console log appears only in that browser
     // socket.emit("RECEIVE_MESSAGE", data);
 
     // send an event to everyone
-    // good: All browsers are correctly updated!
-    // bad: The other rooms get changed
     io.emit("RECEIVE_MESSAGE", data);
 
     // sent a message to everyone except for certain socket

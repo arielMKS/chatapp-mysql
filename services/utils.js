@@ -1,4 +1,20 @@
 const mysql = require("mysql2");
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/../config/config.json")[env];
+
+console.log("UTILS CONFIG", config);
+
+if (config.use_env_variable) {
+  const con = mysql.createConnection(config);
+} else {
+  const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    database: "chatdb",
+    password: "Password1",
+    multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
+  });
+}
 
 // create the connection
 // const con = mysql.createConnection({
@@ -8,13 +24,13 @@ const mysql = require("mysql2");
 //   password: "Password1",
 //   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 // });
-const con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  database: process.env.DATABASE,
-  password: process.env.DB_PASS,
-  multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
-});
+// const con = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   database: process.env.DATABASE,
+//   password: process.env.DB_PASS,
+//   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
+// });
 
 module.exports = {
   // GET PASSWORD OF A PARTICULAR USER
