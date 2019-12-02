@@ -6,11 +6,12 @@ module.exports = {
   // POST LOGIN
   login: function(req, res) {
     const { email, password } = req.body;
-    console.log("controller login hit", req.session);
+    // console.log("controller login hit", req.session);
 
     chatService
       .login(email, password)
       .then(results => {
+        console.log("===== controller login results", results);
         if (!results) {
           res.status(500).json({ success: false });
         } else {

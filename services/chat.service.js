@@ -3,18 +3,14 @@ const UTILS = require("./utils");
 
 // POST LOGIN
 const login = async (email, password) => {
-  console.log("service login", email, password);
-
   try {
     //  1. CHECK DB IF USER EMAIL AND HASHED PASSWORD EXISTS
     const str = await UTILS.getByEmail(email);
 
     if (str.trim().length > 0) {
-      console.log("service email", str);
       // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
       // NOW COMPARE IF PASSWORD FROM DB MATCHES PASSWORD PASSED IN
       const hashedPassword = await UTILS.getPassword(email);
-      console.log("servce hashed pw", password, hashedPassword);
       if (password === hashedPassword.password) {
         const userInfo = {
           userid: hashedPassword.userid,
@@ -29,7 +25,7 @@ const login = async (email, password) => {
       return ""; // return null because email already exists in db
     }
   } catch (err) {
-    // FINISH THIS LINE OF CODE
+    console.log("Error", err);
   }
 };
 

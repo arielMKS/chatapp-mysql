@@ -2,20 +2,6 @@ const mysql = require("mysql2");
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 
-console.log("UTILS CONFIG", config);
-
-if (config.use_env_variable) {
-  const con = mysql.createConnection(config);
-} else {
-  const con = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    database: "chatdb",
-    password: "Password1",
-    multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
-  });
-}
-
 // create the connection
 // const con = mysql.createConnection({
 //   host: "localhost",
@@ -24,27 +10,27 @@ if (config.use_env_variable) {
 //   password: "Password1",
 //   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 // });
-// const con = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   database: process.env.DATABASE,
-//   password: process.env.DB_PASS,
-//   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
-// });
+
+const con = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DATABASE,
+  password: process.env.DB_PASS,
+  multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
+});
 
 module.exports = {
   // GET PASSWORD OF A PARTICULAR USER
   getPassword: function(email) {
     // let query_str = "CALL GetPassword(?, @OUTPUTPARAM); SELECT @OUTPUTPARAM";
     let query_str = "CALL GetPassword(?);";
-
     return con
       .promise()
       .query(query_str, [email])
       .then(([rows, fields]) => {
         return rows[0][0];
       })
-      .catch(err => console.log("ERROR ariel", err));
+      .catch(err => console.log("ERROR", err));
   },
 
   // GET BY EMAIL
@@ -56,7 +42,9 @@ module.exports = {
       .then(([rows, fields]) => {
         return rows[1][0]["@OUTPUTPARAM"];
       })
-      .catch(err => err);
+      .catch(err => {
+        console.log("UTILS GET BY EMAIL ERROR", err);
+      });
   },
 
   //  POST
