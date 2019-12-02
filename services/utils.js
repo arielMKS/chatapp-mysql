@@ -11,11 +11,15 @@ const config = require(__dirname + "/../config/config.json")[env];
 //   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 // });
 
-const con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  database: process.env.DATABASE,
-  password: process.env.DB_PASS,
+// const con = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   database: process.env.DATABASE,
+//   password: process.env.DB_PASS,
+//   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
+// });
+
+const con = mysql.createConnection(process.env.JAWSDB_URL, {
   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 });
 
