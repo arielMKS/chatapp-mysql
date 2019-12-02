@@ -78,11 +78,14 @@ class ChatDashboard extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    socket.emit("SEND_MESSAGE", {
-      userid: this.state.currentUserId,
-      roomid: this.state.activeRoom,
-      message: this.state.inputText
-    });
+    if (this.state.inputText) {
+      socket.emit("SEND_MESSAGE", {
+        userid: this.state.currentUserId,
+        roomid: this.state.activeRoom,
+        message: this.state.inputText
+      });
+      this.setState({ inputText: "" });
+    }
   };
 
   render() {
@@ -90,39 +93,56 @@ class ChatDashboard extends React.Component {
     // console.log("Chat dashboard props-----", this.props.location.state.state);
 
     return (
-      <div className="container">
-        <List>
-          <h1>Welcome, {this.state.currentUserName}</h1>
-          <span>Join a room:</span>
+      <div className="main">
+        <div className="subheading">
+          <h1>Chat App</h1>
+          <span>active room: </span>
+          <h3>
+            {this.state.messagesInThisRoom[0] &&
+              this.state.messagesInThisRoom[0].name}
+          </h3>
+          <h4>User: {this.state.currentUserName}</h4>
+        </div>
 
-          {this.state.rooms.map(room => (
-            <div key={room.roomid}>
-              <button onClick={() => this.joinChatRoom(room.roomid)}>
-                {room.name}
-              </button>
-            </div>
-          ))}
-        </List>
+        <div className="chat-container">
+          <div className="rooms">
+            <List className="">
+              {this.state.rooms.map(room => (
+                <div key={room.roomid}>
+                  <button onClick={() => this.joinChatRoom(room.roomid)}>
+                    {room.name}
+                  </button>
+                </div>
+              ))}
+            </List>
+          </div>
+          <hr></hr>
+          <div className="messages">
+            <List>
+              <ChatRoom
+                key={this.state.activeRoom}
+                messagesInThisRoom={this.state.messagesInThisRoom}
+              />
+            </List>
+          </div>
+        </div>
 
-        <List>
-          <ChatRoom
-            key={this.state.activeRoom}
-            messagesInThisRoom={this.state.messagesInThisRoom}
-            // activeRoom={this.state.activeRoom}
-          />
-          {this.state.activeRoom && (
-            <form onSubmit={this.handleSubmit}>
-              <input
-                value={this.state.inputText}
-                placeholder="Enter your message"
-                name="inputText"
-                type="text"
-                onChange={this.handleChange}
-              ></input>
-              <button type="submit">Send Message</button>
-            </form>
-          )}
-        </List>
+        <div className="inputBox">
+          <List>
+            {this.state.activeRoom && (
+              <form onSubmit={this.handleSubmit}>
+                <input
+                  value={this.state.inputText}
+                  placeholder="Enter your message"
+                  name="inputText"
+                  type="text"
+                  onChange={this.handleChange}
+                ></input>
+                <button type="submit">Send Message</button>
+              </form>
+            )}
+          </List>
+        </div>
       </div>
     );
   }

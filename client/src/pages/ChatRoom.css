@@ -1,0 +1,17 @@
+.container {
+  /* border: 1px solid red; */
+  padding: 5px;
+  margin: 5px;
+}
+
+.container .username,
+.message {
+  /* border: 1px solid blue; */
+  padding: 5px;
+}
+
+.container .username {
+  /* margin: 5px; */
+  background-color: lightgray;
+  border-radius: 0.5em;
+}

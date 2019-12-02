@@ -14,8 +14,8 @@ module.exports = {
         if (!results) {
           res.status(500).json({ success: false });
         } else {
-          req.session.isLoggedIn = true; // IMPORTANT!! The user is logged in
-          req.session.user = results;
+          // req.session.isLoggedIn = true; // IMPORTANT!! The user is logged in
+          // req.session.user = results;
           res.status(200).json({ isLoggedIn: true, user: results }); // return userid, user email
         }
       })

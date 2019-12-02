@@ -28,9 +28,12 @@ class Register extends React.Component {
       password
     };
 
-    API.saveUser(user).then(results => {
-      console.log("Register", results);
-    });
+    API.saveUser(user)
+      .then(results => {
+        console.log("Register", results);
+        this.props.history.push("/");
+      })
+      .catch(err => console.log(err));
   };
 
   render() {

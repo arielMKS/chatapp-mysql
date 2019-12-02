@@ -12,13 +12,19 @@ const login = async (email, password) => {
     if (str.trim().length > 0) {
       console.log("service email", str);
       // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
+      // NOW COMPARE IF PASSWORD FROM DB MATCHES PASSWORD PASSED IN
       const hashedPassword = await UTILS.getPassword(email);
-      const userInfo = {
-        userid: hashedPassword.userid,
-        email: hashedPassword.email
-      };
-      // console.log("service hashedPassword", userInfo);
-      return userInfo;
+      console.log("servce hashed pw", password, hashedPassword);
+      if (password === hashedPassword.password) {
+        const userInfo = {
+          userid: hashedPassword.userid,
+          email: hashedPassword.email
+        };
+        // console.log("service hashedPassword", userInfo);
+        return userInfo;
+      } else {
+        return "";
+      }
     } else {
       return ""; // return null because email already exists in db
     }
