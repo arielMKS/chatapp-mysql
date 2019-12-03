@@ -1,5 +1,6 @@
 import React from "react";
 import API from "../utils/API";
+import { Link } from "react-router-dom";
 
 import "./Login.css";
 
@@ -64,7 +65,7 @@ class Login extends React.Component {
               <button type="submit">Submit</button>
             </div>
             <div className="register">
-              <a href="/register">First time user? Click to register!</a>
+              <Link to="/register"> First time user? Click to register!</Link>
             </div>
           </form>
         </div>
