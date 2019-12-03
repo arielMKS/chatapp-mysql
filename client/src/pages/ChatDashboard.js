@@ -1,10 +1,11 @@
 import React from "react";
 import API from "../utils/API";
-import { List, ListItem } from "../components/List";
+import { List } from "../components/List";
 
 import io from "socket.io-client";
-import ChatRoom from "./ChatRoom";
+import Messages from "../components/Messages/Messages";
 import "./ChatDashboard.css";
+import Rooms from "../components/Rooms/Rooms";
 
 let socket = io("localhost:3001");
 // let socket = io("https://secret-badlands-68198.herokuapp.com/");
@@ -52,6 +53,7 @@ class ChatDashboard extends React.Component {
   requeryMessages = roomid => {
     API.getMessageByRm(roomid)
       .then(res => {
+        console.log("Chat dashboard msg", res.data);
         this.setState({ messagesInThisRoom: res.data });
       })
       .catch(err => console.log("Error", err));
@@ -94,32 +96,38 @@ class ChatDashboard extends React.Component {
       <div className="main">
         <div className="subheading">
           <h1>Chat App</h1>
-          <span>Active room: {!this.state.activeRoom && "None"}</span>
-          <h3>
-            {this.state.messagesInThisRoom[0] &&
-              this.state.messagesInThisRoom[0].name}
-          </h3>
-          <span>User: {this.state.currentUserName}</span>
+          <span>Active room:</span>{" "}
+          {!this.state.messagesInThisRoom[0] ? (
+            <h3>None</h3>
+          ) : (
+            <h3>
+              {this.state.messagesInThisRoom[0] &&
+                this.state.messagesInThisRoom[0].name}
+            </h3>
+          )}
+          {", "}
+          <span>
+            User: <h3>{this.state.currentUserName}</h3>
+          </span>
         </div>
 
         <div className="chat-container">
           <div className="rooms">
-            <List className="">
-              {this.state.rooms.map(room => (
-                <div key={room.roomid}>
-                  <button onClick={() => this.joinChatRoom(room.roomid)}>
-                    {room.name}
-                  </button>
-                </div>
-              ))}
+            <List>
+              <Rooms
+                socket={socket}
+                rooms={this.state.rooms}
+                joinChatRoom={this.joinChatRoom}
+              />
             </List>
           </div>
           <hr></hr>
           <div className="messages">
             <List>
-              <ChatRoom
-                key={this.state.activeRoom}
-                messagesInThisRoom={this.state.messagesInThisRoom}
+              <Messages
+                // key={this.state.activeRoom}
+                currentUserName={this.state.currentUserName}
+                messagesInThisRoom={this.state.messagesInThisRoom || []}
               />
             </List>
           </div>

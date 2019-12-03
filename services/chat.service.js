@@ -6,8 +6,9 @@ const login = async (email, password) => {
   try {
     //  1. CHECK DB IF USER EMAIL AND HASHED PASSWORD EXISTS
     const str = await UTILS.getByEmail(email);
+    console.log("service login", str);
 
-    if (str.trim().length > 0) {
+    if (str && str.trim().length > 0) {
       // LATER: RUN BCRYPT.COMPARE() TO COMPARE HASHED PASSWORD FROM DB BEFORE CREATING A USER
       // NOW COMPARE IF PASSWORD FROM DB MATCHES PASSWORD PASSED IN
       const hashedPassword = await UTILS.getPassword(email);

@@ -2,9 +2,6 @@ const mysql = require("mysql2");
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
 
-console.log("UTILS process.env", process.env);
-console.log("UTILS process.env.NODE_ENV", process.env.NODE_ENV);
-
 // create the connection
 // const con = mysql.createConnection({
 //   host: "localhost",
@@ -14,7 +11,7 @@ console.log("UTILS process.env.NODE_ENV", process.env.NODE_ENV);
 //   multipleStatements: true // IMPORTANT!! SO SPROCS CAN PASS IN AND OUT PARAMETERS
 // });
 
-// When in production mode the environment variables below come from Heroku
+// When in production mode the environment variables below come from Heroku, which I put in
 // When in development mode the environment variables below come from the local .env file
 const con = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -54,7 +51,7 @@ module.exports = {
 
   //  POST
   post: function(fname, lname, email, password) {
-    console.log("utils", fname, lname, email, password);
+    // console.log("utils", fname, lname, email, password);
     let query_str =
       "CALL CreateUser(?,?,?,?, @OUTPUTPARAM); SELECT @OUTPUTPARAM"; //
     return con
@@ -69,8 +66,7 @@ module.exports = {
 
   //  POST A MESSAGE
   postMessage: function(userid, roomid, message) {
-    console.log("Utils data", userid, roomid, message);
-    // **** TEMPORARILY BLOCKED THIS FOR NOW
+    // console.log("Utils data", userid, roomid, message);
     let query_str =
       "CALL InsertMessage(?,?,?, @OUTPUTPARAM); SELECT @OUTPUTPARAM";
     return con
@@ -98,7 +94,7 @@ module.exports = {
 
   // GET ALL CHAT ROOMS
   getAllRoom: function() {
-    console.log("Utils.js get all chat rooms");
+    // console.log("Utils.js get all chat rooms");
     let query_str = "CALL GetAllRoom()";
     return con
       .promise()

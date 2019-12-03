@@ -1,0 +1,22 @@
+.Rooms {
+  /* border: 2px solid blue; */
+  /* width: 45%;   */
+}
+
+.Rooms button {
+  border-radius: 3px;
+  width: 100%;
+  background-color: rgb(73, 205, 209);
+  padding: 1.5em 0;
+  margin: 1.5em 0;
+  color: white;
+  box-shadow: 1px 1px 1px 1px rgba(110, 116, 124, 0.5);
+  text-transform: uppercase;
+  transition: all 0.25s;
+}
+
+.Rooms button:hover {
+  background-color: rgb(40, 112, 114);
+  /* box-shadow: 1px 1px 3px 2px rgba(110, 116, 124, 0.5); */
+  box-shadow: 0 12px 8px 0 rgba(0, 0, 0, 0.24), 0 5px 20px 0 rgba(0, 0, 0, 0.19);
+}

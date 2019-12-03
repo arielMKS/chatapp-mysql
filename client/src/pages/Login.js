@@ -1,6 +1,8 @@
 import React from "react";
 import API from "../utils/API";
 
+import "./Login.css";
+
 class Login extends React.Component {
   state = {
     email: "",
@@ -18,46 +20,54 @@ class Login extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
+    if (email !== "" && password !== "") {
+      const user = {
+        email,
+        password
+      };
 
-    const user = {
-      email,
-      password
-    };
-
-    API.login(user).then(results => {
-      console.log("Login", results);
-      if (results.data.isLoggedIn) {
-        // Go to home page. Pass userid and email
-        this.props.history.push("/dashboard", { state: results.data.user });
-      }
-    });
+      API.login(user).then(results => {
+        if (results.data.isLoggedIn) {
+          // Go to home page. Pass userid and email
+          this.props.history.push("/dashboard", { state: results.data.user });
+        }
+      });
+    }
   };
 
   render() {
-    // FNAME","LNAME","EMAIL3","PW3"
-    console.log("STATE", this.state);
+    // console.log("STATE", this.state);
     return (
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={this.handleSubmit}>
-          Email:
-          <input
-            name="email"
-            value={this.state.email}
-            type="text"
-            onChange={this.handleChange}
-          />
-          <br></br>
-          Password:
-          <input
-            name="password"
-            value={this.state.passsword}
-            type="password"
-            onChange={this.handleChange}
-          />
-          <br></br>
-          <button type="submit">Submit</button>
-        </form>
+      <div className="login-outer-container">
+        <div className="login-container">
+          <div className="heading">
+            <div>Login</div>
+          </div>
+          <form className="login-form" onSubmit={this.handleSubmit}>
+            <input
+              placeholder="Enter username/email"
+              name="email"
+              value={this.state.email}
+              type="text"
+              onChange={this.handleChange}
+            />
+            <br></br>
+            <input
+              placeholder="Enter password"
+              name="password"
+              value={this.state.passsword}
+              type="password"
+              onChange={this.handleChange}
+            />
+            <br></br>
+            <div className="login-btn-container">
+              <button type="submit">Submit</button>
+            </div>
+            <div className="register">
+              <a href="/register">First time user? Click to register!</a>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }

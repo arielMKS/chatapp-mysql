@@ -1,0 +1,20 @@
+.login-outer-container .register-form > input,
+.register-form > button {
+  width: 100%;
+  padding: 1.1em 0 !important;
+  margin: 1.1em 0 !important;
+}
+
+.login-outer-container,
+.register-form .login-btn-container button {
+  font-size: 1em;
+  color: white;
+  background-color: rgb(14, 15, 92);
+  border-radius: 5px;
+}
+
+.login-outer-container,
+.register-form .login > a {
+  color: white;
+  letter-spacing: 1px;
+}

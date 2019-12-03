@@ -1,0 +1,24 @@
+.Messages {
+  /* border: 2px solid yellow; */
+}
+
+.Messages .message-container {
+  /* border: 2px solid blue; */
+}
+
+.Messages .message-container {
+  /* border: 1px solid red; */
+  padding: 5px 0;
+  margin: 5px 0;
+}
+
+.Messages .message-container > .username {
+  border-radius: 10px;
+  background-color: lightgray;
+  margin-left: 30px;
+  padding: 5px;
+}
+
+.Messages .message-container > .message {
+  padding-left: 5px;
+}
