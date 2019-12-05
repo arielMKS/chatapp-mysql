@@ -41,7 +41,6 @@ module.exports = {
 
   // GET ALL ROOMS
   getAllRoom: function(req, res) {
-    console.log("Controller get all room", req.session);
     // console.log("controller get all rooms");
     // const { id } = req.params;
     chatService

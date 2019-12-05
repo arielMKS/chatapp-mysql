@@ -4,7 +4,6 @@ import "./Rooms.css";
 
 class Rooms extends React.Component {
   render() {
-    console.log("Rooms props", this.props);
     return (
       <div className="Rooms">
         {this.props &&

@@ -1,5 +1,5 @@
 const express = require("express");
-const session = require("express-session");
+// const session = require("express-session");
 const app = express();
 const socket = require("socket.io");
 // const io = socket(app);
@@ -13,14 +13,6 @@ const PORT = process.env.PORT || 3001;
 // Define middleware here
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// app.use(
-//   session({
-//     secret: "keyboard cat",
-//     resave: false,
-//     saveUninitialized: true
-//   })
-// );
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {

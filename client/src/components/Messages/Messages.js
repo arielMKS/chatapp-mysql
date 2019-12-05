@@ -4,9 +4,9 @@ import "./Messages.css";
 
 class Messages extends React.Component {
   renderMessage = () => {
-    return this.props.messagesInThisRoom.map((msg, idx) => {
+    return this.props.messagesInThisRoom.map(msg => {
       // add background color to highlight the user
-      if (msg.email != this.props.currentUserName) {
+      if (msg.email !== this.props.currentUserName) {
         return (
           <div className="message-container" key={msg.messageid}>
             <span className="username">{msg.email}:</span>
@@ -15,7 +15,7 @@ class Messages extends React.Component {
         );
       } else {
         return (
-          <div className="message-container" key={idx}>
+          <div className="message-container" key={msg.messageid}>
             <span
               className="username"
               style={{

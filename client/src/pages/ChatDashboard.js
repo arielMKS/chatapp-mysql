@@ -7,8 +7,8 @@ import Messages from "../components/Messages/Messages";
 import "./ChatDashboard.css";
 import Rooms from "../components/Rooms/Rooms";
 
-// let socket = io("localhost:3001");
-let socket = io("https://secret-badlands-68198.herokuapp.com/");
+let socket = io("localhost:3001");
+// let socket = io("https://secret-badlands-68198.herokuapp.com/");
 
 class ChatDashboard extends React.Component {
   state = {
@@ -21,12 +21,17 @@ class ChatDashboard extends React.Component {
     currentUserName: ""
   };
 
+  componentWillUnmount() {
+    console.log("component will unmount firing");
+  }
+
   componentDidMount = () => {
     // console.log("Chat dashboard CDM firing");
     this.loadChatRooms(); // rename to something like init()
 
     // IMPORTANT!! socket.on always listens for event emitter from server and runs isolated from React's CDM
     socket.on("RECEIVE_MESSAGE", data => {
+      console.log("SOCKET", socket);
       // Ariel: this code calls the function to requery new messages but this is not efficient to do for every new message
       if (this.state.activeRoom) {
         this.requeryMessages(this.state.activeRoom);
@@ -90,8 +95,7 @@ class ChatDashboard extends React.Component {
   };
 
   render() {
-    console.log("Chat Dashboard STATE", this.state);
-
+    // console.log("Chat Dashboard STATE", this.state);
     return (
       <div className="main">
         <div className="subheading">
