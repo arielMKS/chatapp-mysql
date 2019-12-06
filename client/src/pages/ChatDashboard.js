@@ -7,8 +7,8 @@ import Messages from "../components/Messages/Messages";
 import "./ChatDashboard.css";
 import Rooms from "../components/Rooms/Rooms";
 
-let socket = io("localhost:3001");
-// let socket = io("https://secret-badlands-68198.herokuapp.com/");
+// let socket = io("localhost:3001");
+let socket = io("https://secret-badlands-68198.herokuapp.com/");
 
 class ChatDashboard extends React.Component {
   state = {
